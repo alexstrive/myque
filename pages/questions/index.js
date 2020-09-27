@@ -49,7 +49,7 @@ const Questions = ({ questions }) => {
           />
         </CardHeader>
         <CardBody>
-          <table class="table table-hover" style={{ cursor: 'pointer' }}>
+          <table className="table table-hover" style={{ cursor: 'pointer' }}>
             <thead>
               <tr>
                 <th scope="col">#</th>

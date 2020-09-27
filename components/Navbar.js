@@ -41,9 +41,16 @@ const CustomNavbar = () => {
       </Nav>
       <Nav navbar className="ml-auto">
         {!session && (
-          <NavItem>
-            <Button onClick={signIn}>Войти / Регистрация</Button>
-          </NavItem>
+          <>
+            <NavItem>
+              <Button onClick={signIn}>Войти</Button>
+            </NavItem>
+            <NavItem>
+              <Link href="/signup" passHref>
+                <NavLink>Регистрация</NavLink>
+              </Link>
+            </NavItem>
+          </>
         )}
         {session && (
           <NavItem>
