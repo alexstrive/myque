@@ -27,7 +27,7 @@ const Questions = ({ questions }) => {
     setTargetTitle(value.toLowerCase())
   }
 
-  const filteredQuestionsByCategory = useMemo(
+  const filteredQuestions = useMemo(
     () =>
       questions
         .filter(
@@ -35,7 +35,8 @@ const Questions = ({ questions }) => {
         )
         .filter((question) =>
           question.title.toLowerCase().includes(targetTitle)
-        ),
+        )
+        .reverse(),
     [targetCategory, targetTitle]
   )
 
@@ -57,18 +58,16 @@ const Questions = ({ questions }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredQuestionsByCategory
-                .reverse()
-                .map(({ title, _id, category, author }, i) => (
-                  <Link href={`/questions/${_id}`} key={_id}>
-                    <tr>
-                      <td>
-                        {title} <Badge theme="dark">{category}</Badge>
-                      </td>
-                      <td>{author}</td>
-                    </tr>
-                  </Link>
-                ))}
+              {filteredQuestions.map(({ title, _id, category, author }, i) => (
+                <Link href={`/questions/${_id}`} key={_id}>
+                  <tr>
+                    <td>
+                      {title} <Badge theme="dark">{category}</Badge>
+                    </td>
+                    <td>{author}</td>
+                  </tr>
+                </Link>
+              ))}
             </tbody>
           </table>
         </CardBody>
