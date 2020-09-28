@@ -52,25 +52,23 @@ const Questions = ({ questions }) => {
           <table className="table table-hover" style={{ cursor: 'pointer' }}>
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Вопрос</th>
                 <th scope="col">Автор</th>
               </tr>
             </thead>
             <tbody>
-              {filteredQuestionsByCategory.map(
-                ({ title, _id, category, author }, i) => (
+              {filteredQuestionsByCategory
+                .reverse()
+                .map(({ title, _id, category, author }, i) => (
                   <Link href={`/questions/${_id}`} key={_id}>
                     <tr>
-                      <th scope="row">{i}</th>
                       <td>
                         {title} <Badge theme="dark">{category}</Badge>
                       </td>
                       <td>{author}</td>
                     </tr>
                   </Link>
-                )
-              )}
+                ))}
             </tbody>
           </table>
         </CardBody>

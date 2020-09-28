@@ -33,7 +33,9 @@ const options = {
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
-          return Promise.resolve(user)
+          return Promise.resolve({
+            name: username,
+          })
         } else {
           // If you return null or false then the credentials will be rejected
           return Promise.resolve(null)

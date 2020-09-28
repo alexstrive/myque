@@ -6,6 +6,7 @@ const ProtectedPage = ({ children, redirect }) => {
   const [session] = useSession()
   const router = useRouter()
 
+  console.log(session)
   useEffect(() => {
     if (!session && redirect) {
       router.replace('/')
