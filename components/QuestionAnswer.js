@@ -12,7 +12,7 @@ const changeAnswerState = async (data) => {
   return jsonResult
 }
 
-const Answer = ({ author, content, _id, best, canPromote }) => {
+const Answer = ({ author, content, _id, best, canModify, canPromote }) => {
   const router = useRouter()
   const updateAnswer = () => {
     changeAnswerState({ answerId: _id }).then(() =>
@@ -29,7 +29,7 @@ const Answer = ({ author, content, _id, best, canPromote }) => {
             Сделать лучшим ответом
           </Button>
         )}
-        {best && (
+        {canModify && best && (
           <Button size="sm" theme="light" outline onClick={updateAnswer}>
             Сделать обычным ответом
           </Button>

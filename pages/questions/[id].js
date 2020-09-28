@@ -29,7 +29,11 @@ const QuestionPage = ({ question }) => {
               <div>
                 <h5>Ответы</h5>
                 {question?.answers.map((answer) => (
-                  <QuestionAnswer {...answer} canPromote={canPromote} />
+                  <QuestionAnswer
+                    {...answer}
+                    canPromote={canPromote}
+                    canModify={canModify}
+                  />
                 ))}
               </div>
               <QuestionAnswerForm questionId={question._id} />
