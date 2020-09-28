@@ -5,8 +5,9 @@ export default mongoose.models.QuestionAnswer ||
   mongoose.model(
     'QuestionAnswer',
     new Schema({
-      author: 'String',
-      content: 'String',
+      author: String,
+      content: String,
       question: { type: Schema.Types.ObjectId, ref: 'Question' },
+      best: Boolean,
     })
   )

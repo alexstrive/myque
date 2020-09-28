@@ -31,6 +31,17 @@ export default async (req, res) => {
     return
   }
 
+  if (req.method === 'PATCH') {
+    const { answerId } = JSON.parse(req.body)
+
+    const answer = await QuestionAnswer.findById(answerId)
+    answer.best = true
+    answer.save()
+
+    res.json({ success: true })
+    return
+  }
+
   res.statusCode = 405
   res.end('Method Not Allowed')
 }

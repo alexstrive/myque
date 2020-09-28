@@ -1,11 +1,5 @@
 const mongoose = require('mongoose')
 
-const ObjectId = mongoose.Types.ObjectId
-
-ObjectId.prototype.valueOf = function () {
-  return this.toString()
-}
-
 const connection = {}
 
 export const connect = async () => {
