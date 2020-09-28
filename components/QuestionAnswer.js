@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { Button, Badge } from 'shards-react'
 
-const makeAnswerBest = async (data) => {
+const changeAnswerState = async (data) => {
   const result = await fetch('/api/answer', {
     method: 'PATCH',
     body: JSON.stringify(data),
@@ -14,8 +14,10 @@ const makeAnswerBest = async (data) => {
 
 const Answer = ({ author, content, _id, best, canPromote }) => {
   const router = useRouter()
-  const promoteAnswer = () => {
-    makeAnswerBest({ answerId: _id }).then(() => router.replace(router.asPath))
+  const updateAnswer = () => {
+    changeAnswerState({ answerId: _id }).then(() =>
+      router.replace(router.asPath)
+    )
   }
 
   return (
@@ -23,8 +25,13 @@ const Answer = ({ author, content, _id, best, canPromote }) => {
       <b>
         {author} {best && <Badge theme="warning">Лучший</Badge>}
         {canPromote && !best && (
-          <Button size="sm" theme="light" outline onClick={promoteAnswer}>
-            Сделать лучшим
+          <Button size="sm" theme="light" outline onClick={updateAnswer}>
+            Сделать лучшим ответом
+          </Button>
+        )}
+        {best && (
+          <Button size="sm" theme="light" outline onClick={updateAnswer}>
+            Сделать обычным ответом
           </Button>
         )}
       </b>

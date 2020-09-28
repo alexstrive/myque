@@ -20,6 +20,7 @@ export default async (req, res) => {
     const answer = await QuestionAnswer.create({
       ...answerValues,
       author: session?.user?.name,
+      best: false,
     })
 
     const question = await Question.findById(answerValues.question)
@@ -35,7 +36,7 @@ export default async (req, res) => {
     const { answerId } = JSON.parse(req.body)
 
     const answer = await QuestionAnswer.findById(answerId)
-    answer.best = true
+    answer.best = !answer.best
     answer.save()
 
     res.json({ success: true })

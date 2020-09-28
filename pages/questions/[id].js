@@ -6,9 +6,14 @@ import { Container, Card, Col, Row, CardBody, CardHeader } from 'shards-react'
 import QuestionAnswerForm from '../../components/QuestionAnswerForm'
 import QuestionAnswer from '../../components/QuestionAnswer'
 
+const doesBestAnswerExist = (question) =>
+  question.answers.filter((answer) => answer.best).length > 0
+
 const QuestionPage = ({ question }) => {
   const [session] = useSession()
   const canModify = session?.user?.name === question.author
+  const canPromote = canModify && !doesBestAnswerExist(question)
+  question.answers.sort((a, b) => b.best) // bubble best answer on the top
 
   return (
     <Container className="pt-4">
@@ -24,7 +29,7 @@ const QuestionPage = ({ question }) => {
               <div>
                 <h5>Ответы</h5>
                 {question?.answers.map((answer) => (
-                  <QuestionAnswer {...answer} canPromote={canModify} />
+                  <QuestionAnswer {...answer} canPromote={canPromote} />
                 ))}
               </div>
               <QuestionAnswerForm questionId={question._id} />
