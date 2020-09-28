@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { Button } from 'shards-react'
+import { Button, Badge } from 'shards-react'
 
 const makeAnswerBest = async (data) => {
   const result = await fetch('/api/answer', {
@@ -19,9 +19,9 @@ const Answer = ({ author, content, _id, best, canPromote }) => {
   }
 
   return (
-    <div className={`mb-4 p-4 ${best ? 'bg-warning' : ''}`}>
+    <div className="mb-4 p-4 bg-light">
       <b>
-        {author}{' '}
+        {author} {best && <Badge theme="warning">Лучший</Badge>}
         {canPromote && !best && (
           <Button size="sm" theme="light" outline onClick={promoteAnswer}>
             Сделать лучшим
