@@ -18,12 +18,8 @@ const options = {
     Providers.Credentials({
       name: 'Credentials',
       credentials: {
-        username: {
-          label: 'Имя пользователя',
-          type: 'text',
-          placeholder: 'bakasa',
-        },
-        password: { label: 'Пароль', type: 'password' },
+        username: { label: 'Username', type: 'text', placeholder: 'bakasa' },
+        password: { label: 'Password', type: 'password' },
       },
       authorize: async ({ username, password: plainPassword }) => {
         const password = crypto
