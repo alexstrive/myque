@@ -65,6 +65,20 @@ const SignUp = () => {
             </FormGroup>
 
             <FormGroup>
+              <label htmlFor="#email">Email</label>
+              <Controller
+                as={FormInput}
+                name="email"
+                id="#email"
+                type="email"
+                placeholder=""
+                defaultValue=""
+                control={control}
+                rules={{ required: true }}
+              />
+            </FormGroup>
+
+            <FormGroup>
               <label htmlFor="#password">Пароль</label>
               <Controller
                 as={FormInput}

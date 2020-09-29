@@ -4,21 +4,23 @@ import { useRouter } from 'next/router'
 import {
   Container,
   Card,
-  Col,
   Row,
   CardBody,
   CardHeader,
   Badge,
+  Form,
   FormInput,
 } from 'shards-react'
 import Link from 'next/link'
 import { connect } from '../../db'
 import Question from '../../models/Question'
+import { categoryTranslation } from '../../constants'
 
 const Questions = ({ questions }) => {
   const router = useRouter()
   const targetCategory = router.query.category
   const passFilter = !targetCategory
+  const showCategoryBadge = !targetCategory
 
   const [targetTitle, setTargetTitle] = useState('')
 
@@ -50,6 +52,9 @@ const Questions = ({ questions }) => {
           />
         </CardHeader>
         <CardBody>
+          {categoryTranslation && (
+            <h3>{categoryTranslation[targetCategory]}</h3>
+          )}
           <table className="table table-hover" style={{ cursor: 'pointer' }}>
             <thead>
               <tr>
@@ -62,7 +67,12 @@ const Questions = ({ questions }) => {
                 <Link href={`/questions/${_id}`} key={_id}>
                   <tr>
                     <td>
-                      {title} <Badge theme="dark">{category}</Badge>
+                      {title}{' '}
+                      {showCategoryBadge && (
+                        <Badge theme="dark">
+                          {categoryTranslation[category]}
+                        </Badge>
+                      )}
                     </td>
                     <td>{author}</td>
                   </tr>

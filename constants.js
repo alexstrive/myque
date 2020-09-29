@@ -11,3 +11,11 @@ export const categories = [
   { key: 'travel', title: 'Путешествия' },
   { key: 'hobby', title: 'Хобби, развлечения' },
 ]
+
+export const categoryTranslation = Object.values(categories).reduce(
+  (acc, category) => ({
+    ...acc,
+    [category.key]: category.title,
+  }),
+  {}
+)

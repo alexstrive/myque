@@ -7,5 +7,6 @@ export default mongoose.models.CustomUser ||
     new Schema({
       username: 'String',
       password: 'String',
+      email: 'String',
     })
   )

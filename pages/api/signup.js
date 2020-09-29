@@ -11,7 +11,7 @@ const doesUserExist = async (username) => {
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { username, password: plainPassword } = JSON.parse(req.body)
+    const { username, password: plainPassword, email } = JSON.parse(req.body)
 
     if (await doesUserExist(username)) {
       res.json({
@@ -26,7 +26,7 @@ export default async (req, res) => {
       .update(plainPassword)
       .digest('base64')
 
-    const user = await CustomUser.create({ username, password })
+    const user = await CustomUser.create({ username, password, email })
 
     res.statusCode = 200
     res.json({ success: true })
