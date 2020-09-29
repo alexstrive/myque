@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import { useForm, Controller } from 'react-hook-form'
@@ -34,8 +35,11 @@ const Ask = () => {
 
   return (
     <ProtectedComponent redirect>
+      <Head>
+        <title>Задай свой вопрос</title>
+      </Head>
       <Container className="pt-4">
-        <h1>Задайте свой вопрос</h1>
+        <h1>Задай свой вопрос</h1>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <FormGroup>
             <label htmlFor="#title">Заголовок</label>

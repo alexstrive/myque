@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useSession } from 'next-auth/client'
 import { connect } from '../../db'
 import Question from '../../models/Question'
@@ -16,32 +17,37 @@ const QuestionPage = ({ question }) => {
   question.answers.sort((a, b) => b.best) // bubble best answer on the top
 
   return (
-    <Container className="pt-4">
-      <Row>
-        <Col sm="12">
-          <Card>
-            <CardHeader>Вопрос от {question?.author}</CardHeader>
-            <CardBody>
-              <div>
-                <h3>{question?.title}</h3>
-                <p>{question?.description}</p>
-              </div>
-              <div>
-                <h5>Ответы</h5>
-                {question?.answers.map((answer) => (
-                  <QuestionAnswer
-                    {...answer}
-                    canPromote={canPromote}
-                    canModify={canModify}
-                  />
-                ))}
-              </div>
-              <QuestionAnswerForm questionId={question._id} />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Head>
+        <title>{question?.title}</title>
+      </Head>
+      <Container className="pt-4">
+        <Row>
+          <Col sm="12">
+            <Card>
+              <CardHeader>Вопрос от {question?.author}</CardHeader>
+              <CardBody>
+                <div>
+                  <h3>{question?.title}</h3>
+                  <p>{question?.description}</p>
+                </div>
+                <div>
+                  <h5>Ответы</h5>
+                  {question?.answers.map((answer) => (
+                    <QuestionAnswer
+                      {...answer}
+                      canPromote={canPromote}
+                      canModify={canModify}
+                    />
+                  ))}
+                </div>
+                <QuestionAnswerForm questionId={question._id} />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
 

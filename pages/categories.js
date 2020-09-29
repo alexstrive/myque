@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import { Container, Card, CardBody, CardHeader, Row, Col } from 'shards-react'
 import { Question } from '../models'
@@ -5,25 +6,30 @@ import { categoryTranslation } from '../constants'
 
 const Categories = ({ categories }) => {
   return (
-    <Container className="pt-4">
-      <Row>
-        {categories.map(({ key, title, count }) => (
-          <Col sm="6" md="4" key={key} className="mb-4">
-            <Link
-              href={{
-                pathname: '/questions',
-                query: { category: key },
-              }}
-            >
-              <Card style={{ cursor: 'pointer' }}>
-                <CardHeader>{title}</CardHeader>
-                <CardBody>Вопросов: {count}</CardBody>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      <Head>
+        <title>Категории вопросов</title>
+      </Head>
+      <Container className="pt-4">
+        <Row>
+          {categories.map(({ key, title, count }) => (
+            <Col sm="6" md="4" key={key} className="mb-4">
+              <Link
+                href={{
+                  pathname: '/questions',
+                  query: { category: key },
+                }}
+              >
+                <Card style={{ cursor: 'pointer' }}>
+                  <CardHeader>{title}</CardHeader>
+                  <CardBody>Вопросов: {count}</CardBody>
+                </Card>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </>
   )
 }
 

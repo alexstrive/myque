@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
-
+import Head from 'next/head'
 import {
   Container,
   Card,
@@ -43,48 +43,55 @@ const Questions = ({ questions }) => {
   )
 
   return (
-    <Container className="pt-4">
-      <Card>
-        <CardHeader>
-          <FormInput
-            placeholder="Название вопроса"
-            onChange={handleTargetTitleChange}
-          />
-        </CardHeader>
-        <CardBody>
-          {categoryTranslation && (
-            <h3>{categoryTranslation[targetCategory]}</h3>
-          )}
-          <table className="table table-hover" style={{ cursor: 'pointer' }}>
-            <thead>
-              <tr>
-                <th scope="col">Вопрос</th>
-                <th scope="col">Автор</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredQuestions.map(({ title, _id, category, author }, i) => (
-                <Link href={`/questions/${_id}`} key={_id}>
-                  <tr>
-                    <td>
-                      {title}{' '}
-                      {showCategoryBadge && (
-                        <Badge theme="dark">
-                          {categoryTranslation[category]}
-                        </Badge>
-                      )}
-                    </td>
-                    <td>{author}</td>
-                  </tr>
-                </Link>
-              ))}
-            </tbody>
-          </table>
-        </CardBody>
-      </Card>
+    <>
+      <Head>
+        <title>Вопросы</title>
+      </Head>
+      <Container className="pt-4">
+        <Card>
+          <CardHeader>
+            <FormInput
+              placeholder="Название вопроса"
+              onChange={handleTargetTitleChange}
+            />
+          </CardHeader>
+          <CardBody>
+            {categoryTranslation && (
+              <h3>{categoryTranslation[targetCategory]}</h3>
+            )}
+            <table className="table table-hover" style={{ cursor: 'pointer' }}>
+              <thead>
+                <tr>
+                  <th scope="col">Вопрос</th>
+                  <th scope="col">Автор</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredQuestions.map(
+                  ({ title, _id, category, author }, i) => (
+                    <Link href={`/questions/${_id}`} key={_id}>
+                      <tr>
+                        <td>
+                          {title}{' '}
+                          {showCategoryBadge && (
+                            <Badge theme="dark">
+                              {categoryTranslation[category]}
+                            </Badge>
+                          )}
+                        </td>
+                        <td>{author}</td>
+                      </tr>
+                    </Link>
+                  )
+                )}
+              </tbody>
+            </table>
+          </CardBody>
+        </Card>
 
-      <Row></Row>
-    </Container>
+        <Row></Row>
+      </Container>
+    </>
   )
 }
 
