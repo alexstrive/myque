@@ -11,7 +11,7 @@ import Pagination from '../../components/Pagination'
 import QuestionList from '../../components/QuestionList'
 import QuestionTitleSearch from '../../components/QuestionTitleSearch'
 
-const Questions = ({ questions, maxPages }) => {
+const Questions = ({ questions, pages }) => {
   const router = useRouter()
   const targetCategory = router.query.category
 
@@ -27,7 +27,7 @@ const Questions = ({ questions, maxPages }) => {
           </CardHeader>
           <CardBody>
             <QuestionList items={questions} category={targetCategory} />
-            <Pagination maxPages={maxPages} />
+            <Pagination maxPages={pages} />
           </CardBody>
         </Card>
       </Container>
@@ -55,26 +55,22 @@ export async function getServerSideProps(context) {
   const perPageItemsNumber = 10
   const skipItemsNumber = perPageItemsNumber * (pageNumber - 1)
 
-  const relevantQuestions = Question.find(questionFilter)
-
-  const maxPages = Math.ceil(
-    (await relevantQuestions).length / perPageItemsNumber
-  )
+  const totalQuestionNumber = await Question.countDocuments(questionFilter)
+  const pages = Math.ceil(totalQuestionNumber / perPageItemsNumber)
 
   const questions = (
-    await relevantQuestions
+    await Question.find(questionFilter)
       .skip(skipItemsNumber)
       .limit(perPageItemsNumber)
       .sort('-_id')
       .select({ __v: 0, answers: 0 })
       .lean()
-  ) // retrieve all values, except specified in `select`
-    .map((question) => ({ ...question, _id: question._id.toString() })) // serialize `id` parameter
+  ).map((question) => ({ ...question, _id: question._id.toString() }))
 
   return {
     props: {
       questions,
-      maxPages,
+      pages,
     },
   }
 }
