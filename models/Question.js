@@ -7,10 +7,22 @@ export default mongoose.models.Question ||
   mongoose.model(
     'Question',
     new Schema({
-      title: 'String',
-      description: 'String',
-      category: 'String',
-      author: 'String',
+      title: {
+        type: String,
+        required: [true, 'Укажите заголовок вопроса'],
+      },
+      description: {
+        type: String,
+        required: [true, 'Укажите описание вопроса'],
+      },
+      category: {
+        type: String,
+        // enum:
+      },
+      author: {
+        type: String,
+        required: [true, 'Укажите автора вопроса'],
+      },
       answers: [{ type: Schema.Types.ObjectId, ref: 'QuestionAnswer' }],
     })
   )

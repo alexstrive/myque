@@ -67,7 +67,9 @@ const CustomNavbar = () => {
           )}
           {session && (
             <NavItem>
-              <Button onClick={signOut}>Выйти</Button>
+              <Link href="/api/auth/signout" passHref>
+                <NavLink>Выйти</NavLink>
+              </Link>
             </NavItem>
           )}
         </Nav>

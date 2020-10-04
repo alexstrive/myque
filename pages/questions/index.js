@@ -1,46 +1,19 @@
-import { useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import {
-  Container,
-  Card,
-  Row,
-  CardBody,
-  CardHeader,
-  Badge,
-  Form,
-  FormInput,
-} from 'shards-react'
-import Link from 'next/link'
 import { connect } from '../../db'
-import Question from '../../models/Question'
-import { categoryTranslation } from '../../constants'
+import escapeStringRegexp from 'escape-string-regexp'
 
-const Questions = ({ questions }) => {
+import { Container, Card, CardBody, CardHeader } from 'shards-react'
+
+import Question from '../../models/Question'
+
+import Pagination from '../../components/Pagination'
+import QuestionList from '../../components/QuestionList'
+import QuestionTitleSearch from '../../components/QuestionTitleSearch'
+
+const Questions = ({ questions, maxPages }) => {
   const router = useRouter()
   const targetCategory = router.query.category
-  const passFilter = !targetCategory
-  const showCategoryBadge = !targetCategory
-
-  const [targetTitle, setTargetTitle] = useState('')
-
-  const handleTargetTitleChange = (event) => {
-    const value = event.target.value
-    setTargetTitle(value.toLowerCase())
-  }
-
-  const filteredQuestions = useMemo(
-    () =>
-      questions
-        .filter(
-          (question) => question.category === targetCategory || passFilter
-        )
-        .filter((question) =>
-          question.title.toLowerCase().includes(targetTitle)
-        )
-        .reverse(),
-    [targetCategory, targetTitle]
-  )
 
   return (
     <>
@@ -50,61 +23,59 @@ const Questions = ({ questions }) => {
       <Container className="pt-4">
         <Card>
           <CardHeader>
-            <FormInput
-              placeholder="Название вопроса"
-              onChange={handleTargetTitleChange}
-            />
+            <QuestionTitleSearch />
           </CardHeader>
           <CardBody>
-            {categoryTranslation && (
-              <h3>{categoryTranslation[targetCategory]}</h3>
-            )}
-            <table className="table table-hover" style={{ cursor: 'pointer' }}>
-              <thead>
-                <tr>
-                  <th scope="col">Вопрос</th>
-                  <th scope="col">Автор</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredQuestions.map(
-                  ({ title, _id, category, author }, i) => (
-                    <Link href={`/questions/${_id}`} key={_id}>
-                      <tr>
-                        <td>
-                          {title}{' '}
-                          {showCategoryBadge && (
-                            <Badge theme="dark">
-                              {categoryTranslation[category]}
-                            </Badge>
-                          )}
-                        </td>
-                        <td>{author}</td>
-                      </tr>
-                    </Link>
-                  )
-                )}
-              </tbody>
-            </table>
+            <QuestionList items={questions} category={targetCategory} />
+            <Pagination maxPages={maxPages} />
           </CardBody>
         </Card>
-
-        <Row></Row>
       </Container>
     </>
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   connect()
 
+  let questionFilter = {}
+
+  if (context.query.category) {
+    questionFilter.category = context.query.category
+  }
+
+  if (context.query.title) {
+    questionFilter.title = new RegExp(
+      escapeStringRegexp(context.query.title),
+      'i'
+    )
+  }
+
+  const pageNumber = context.query.p ?? 1
+  const perPageItemsNumber = 10
+  const skipItemsNumber = perPageItemsNumber * (pageNumber - 1)
+
+  const relevantQuestions = Question.find(questionFilter)
+
+  const maxPages = Math.ceil(
+    (await relevantQuestions).length / perPageItemsNumber
+  )
+
   const questions = (
-    await Question.find({}).select({ __v: 0, answers: 0 }).lean()
+    await relevantQuestions
+      .skip(skipItemsNumber)
+      .limit(perPageItemsNumber)
+      .sort('-_id')
+      .select({ __v: 0, answers: 0 })
+      .lean()
   ) // retrieve all values, except specified in `select`
     .map((question) => ({ ...question, _id: question._id.toString() })) // serialize `id` parameter
 
   return {
-    props: { questions },
+    props: {
+      questions,
+      maxPages,
+    },
   }
 }
 
