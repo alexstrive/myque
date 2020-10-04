@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const Pagination = ({ maxPages = 1 }) => {
   const router = useRouter()
-  const visitedPageNumber = Number.parseInt(router.query?.p)
+  const visitedPageNumber = Number.parseInt(router.query?.p ?? 1)
 
   return (
     <div>
