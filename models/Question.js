@@ -1,7 +1,7 @@
-import * as QuestionAnswer from './QuestionAnswer'
+import mongoose, { Schema } from 'mongoose'
+import * as QuestionAnswer from './QuestionAnswer' // required
 
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+import { categoryKeys } from '../constants'
 
 export default mongoose.models.Question ||
   mongoose.model(
@@ -9,19 +9,20 @@ export default mongoose.models.Question ||
     new Schema({
       title: {
         type: String,
-        required: [true, 'Укажите заголовок вопроса'],
+        required: true,
       },
       description: {
         type: String,
-        required: [true, 'Укажите описание вопроса'],
+        required: true,
       },
       category: {
         type: String,
-        // enum:
+        required: true,
+        enum: categoryKeys,
       },
       author: {
         type: String,
-        required: [true, 'Укажите автора вопроса'],
+        required: true,
       },
       answers: [{ type: Schema.Types.ObjectId, ref: 'QuestionAnswer' }],
     })

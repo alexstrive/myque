@@ -1,3 +1,5 @@
+import { generateCategoryKeys, generateCategoryTranslations } from './utils'
+
 export const categories = [
   { key: 'auto', title: 'Авто' },
   { key: 'business', title: 'Бизнес, предпринимательство' },
@@ -12,10 +14,6 @@ export const categories = [
   { key: 'hobby', title: 'Хобби, развлечения' },
 ]
 
-export const categoryTranslation = Object.values(categories).reduce(
-  (acc, category) => ({
-    ...acc,
-    [category.key]: category.title,
-  }),
-  {}
-)
+export const categoryKeys = generateCategoryKeys(categories)
+
+export const categoryTranslation = generateCategoryTranslations(categories)

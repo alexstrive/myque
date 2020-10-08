@@ -27,17 +27,5 @@
     "@shelf/jest-mongodb": "^1.2.3",
     "babel-jest": "^26.3.0",
     "jest": "^26.4.2"
-  },
-  "jest": {
-    "preset": "@shelf/jest-mongodb",
-    "testPathIgnorePatterns": [
-      "/.next/",
-      "/node_modules/",
-      "/tests/",
-      "/coverage/"
-    ],
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    }
   }
 }

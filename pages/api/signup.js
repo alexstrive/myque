@@ -1,8 +1,6 @@
 import { connect } from '../../db'
 import CustomUser from '../../models/CustomUser'
 
-const crypto = require('crypto')
-
 connect()
 
 const doesUserExist = async (username) => {
@@ -11,7 +9,7 @@ const doesUserExist = async (username) => {
 
 export default async (req, res) => {
   if (req.method === 'POST') {
-    const { username, password: plainPassword, email } = JSON.parse(req.body)
+    const { username, password, email } = JSON.parse(req.body)
 
     if (await doesUserExist(username)) {
       res.json({
@@ -20,11 +18,6 @@ export default async (req, res) => {
       })
       return
     }
-
-    const password = crypto
-      .createHash('sha256')
-      .update(plainPassword)
-      .digest('base64')
 
     const user = await CustomUser.create({ username, password, email })
 
