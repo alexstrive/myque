@@ -1,4 +1,4 @@
-import { generateCategoryKeys, generateCategoryTranslations } from '../utils/'
+import { generateCategoryKeys, generateCategoryTranslations } from '.'
 
 describe('utils#categories', () => {
   const mockCategories = [
